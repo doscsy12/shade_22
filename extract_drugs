@@ -1,0 +1,113 @@
+WITH antiplatelet_table AS (
+	SELECT
+	subject_id,
+	MAX(CASE WHEN drug IN ('Aspi','Aspir','Aspiri','aspirin')	 OR
+		drug = 'Aspirin' OR drug =   'Aspirin '   OR
+		drug =  'Aspirin (Buffered)' OR  drug = 'Aspirin (Rectal)' OR
+		drug =  'Aspirin 325 '  OR drug =   'Aspirin 325 mg' OR
+		drug =  'aspirin 325 mg' OR drug =  'Aspirin 325 mg ' OR
+		drug = 'Aspirin 325 mg p-o'  OR drug =  'Aspirin 325mg'  OR
+		drug =  'Aspirin 325mg ' OR drug =  'Aspirin 325mg TAB' OR
+		drug =  'aspirin 81 mg' OR drug =  'Aspirin 81 mg' OR
+		drug = 'Aspirin 81 mg ' OR drug =  'Aspirin 81mg' OR
+		drug =  'Aspirin 81mg ' OR drug = 'Aspirin 81mg (1cap)' OR
+		drug = 'Aspirin 81mg or placbo' OR drug = 'Aspirin 81mg TAB' OR
+		drug =  'Aspirin EC' OR drug =  'Aspirin Low Dose' OR
+		drug =  'Aspirin Low-Strength' OR drug =  'INV-Aspirin' OR
+		drug = 'Enteric Coated Aspirin' 
+		THEN 1 ELSE 0 END ) as aspirin,
+	
+	MAX(CASE WHEN drug =  'clopidigrel 75mg' OR drug = 'Clopidigrel 75mg po' OR
+		drug =  'clopidogrel' OR drug =  'Clopidogrel' OR
+		drug =  'Clopidogrel ' OR drug = 'clopidogrel 150 mg' OR
+		drug =  'Clopidogrel 150 mg' OR drug = 'Clopidogrel 150mg' OR
+		drug =  'Clopidogrel 75 mg'  OR drug = 'Clopidogrel 75mg' OR
+		drug =  'Clopidogrel Bisulfate' OR drug =  'clopidogrel suspension' OR
+		drug =   'Clopidogrel75mg'  OR drug = 'Clopidogril 75mg' OR
+		drug =  'Clopidopgrel 75mg '   OR drug ='INV-Clopidogrel' OR
+		drug =   'Effient'  OR drug = 'Plavix' OR drug =  'prasugrel' OR
+		drug ='Prasugrel' 
+		THEN 1 ELSE 0 END ) as clopidogrel,
+	
+	MAX(CASE WHEN drug =  'Cangrelor' OR drug =   'Brilinta' OR
+		drug =  'ticagrelor' OR drug =   'Ticlopidine HCl' 
+		THEN 1 ELSE 0 END ) as ticagrelor,
+	
+	 subject_id, min(starttime)
+FROM mimiciv_hosp.prescriptions
+WHERE drug =   'aspirin'
+group by subject_id;
+	FROM mimiciv_hosp.prescriptions
+	GROUP BY subject_id
+)
+SELECT 
+subject_id,
+aspirin,
+clopidogrel,
+ticagrelor
+FROM antiplatelet_table;
+     
+Grouping medications under aspirin, clopidogrel and other_antiplatelet categories, and electing specific drugs under the aspirin, clopidogrel and other_antiplatelet categories only. (together with patient ID, start and stop time of when the medications are administered.
+
+
+SELECT subject_id, 
+	(CASE WHEN drug IN ('Aspi','Aspir','Aspiri','aspirin')	 OR
+		drug = 'Aspirin' OR drug =   'Aspirin '   OR
+		drug =  'Aspirin (Buffered)' OR  drug = 'Aspirin (Rectal)' OR
+		drug =  'Aspirin 325 '  OR drug =   'Aspirin 325 mg' OR
+		drug =  'aspirin 325 mg' OR drug =  'Aspirin 325 mg ' OR
+		drug = 'Aspirin 325 mg p-o'  OR drug =  'Aspirin 325mg'  OR
+		drug =  'Aspirin 325mg ' OR drug =  'Aspirin 325mg TAB' OR
+		drug =  'aspirin 81 mg' OR drug =  'Aspirin 81 mg' OR
+		drug = 'Aspirin 81 mg ' OR drug =  'Aspirin 81mg' OR
+		drug =  'Aspirin 81mg ' OR drug = 'Aspirin 81mg (1cap)' OR
+		drug = 'Aspirin 81mg or placbo' OR drug = 'Aspirin 81mg TAB' OR
+		drug =  'Aspirin EC' OR drug =  'Aspirin Low Dose' OR
+		drug =  'Aspirin Low-Strength' OR drug =  'INV-Aspirin' OR
+		drug = 'Enteric Coated Aspirin' 
+		THEN aspirin,
+	
+	CASE WHEN drug =  'clopidigrel 75mg' OR drug = 'Clopidigrel 75mg po' OR
+		drug =  'clopidogrel' OR drug =  'Clopidogrel' OR
+		drug =  'Clopidogrel ' OR drug = 'clopidogrel 150 mg' OR
+		drug =  'Clopidogrel 150 mg' OR drug = 'Clopidogrel 150mg' OR
+		drug =  'Clopidogrel 75 mg'  OR drug = 'Clopidogrel 75mg' OR
+		drug =  'Clopidogrel Bisulfate' OR drug =  'clopidogrel suspension' OR
+		drug =   'Clopidogrel75mg'  OR drug = 'Clopidogril 75mg' OR
+		drug =  'Clopidopgrel 75mg '   OR drug ='INV-Clopidogrel' OR
+		drug =   'Effient'  OR drug = 'Plavix' OR drug =  'prasugrel' OR
+		drug ='Prasugrel' 
+		THEN clopidogrel,
+	
+	CASE WHEN drug =  'Cangrelor' OR drug =   'Brilinta' OR
+		drug =  'ticagrelor' OR drug =   'Ticlopidine HCl' 
+		THEN  ticagrelor,
+		END ) AS other_antiplatelet,
+		
+		starttime, stoptime,
+	 
+FROM mimiciv_hosp.prescriptions
+WHEN (drug IN ('Aspi','Aspir','Aspiri','aspirin')	 OR
+		drug = 'Aspirin' OR drug =   'Aspirin '   OR
+		drug =  'Aspirin (Buffered)' OR  drug = 'Aspirin (Rectal)' OR
+		drug =  'Aspirin 325 '  OR drug =   'Aspirin 325 mg' OR
+		drug =  'aspirin 325 mg' OR drug =  'Aspirin 325 mg ' OR
+		drug = 'Aspirin 325 mg p-o'  OR drug =  'Aspirin 325mg'  OR
+		drug =  'Aspirin 325mg ' OR drug =  'Aspirin 325mg TAB' OR
+		drug =  'aspirin 81 mg' OR drug =  'Aspirin 81 mg' OR
+		drug = 'Aspirin 81 mg ' OR drug =  'Aspirin 81mg' OR
+		drug =  'Aspirin 81mg ' OR drug = 'Aspirin 81mg (1cap)' OR
+		drug = 'Aspirin 81mg or placbo' OR drug = 'Aspirin 81mg TAB' OR
+		drug =  'Aspirin EC' OR drug =  'Aspirin Low Dose' OR
+		drug =  'Aspirin Low-Strength' OR drug =  'INV-Aspirin' OR
+		drug = 'Enteric Coated Aspirin' OR drug =  'clopidigrel 75mg' OR drug = 'Clopidigrel 75mg po' OR
+		drug =  'clopidogrel' OR drug =  'Clopidogrel' OR
+		drug =  'Clopidogrel ' OR drug = 'clopidogrel 150 mg' OR
+		drug =  'Clopidogrel 150 mg' OR drug = 'Clopidogrel 150mg' OR
+		drug =  'Clopidogrel 75 mg'  OR drug = 'Clopidogrel 75mg' OR
+		drug =  'Clopidogrel Bisulfate' OR drug =  'clopidogrel suspension' OR
+		drug =   'Clopidogrel75mg'  OR drug = 'Clopidogril 75mg' OR
+		drug =  'Clopidopgrel 75mg '   OR drug ='INV-Clopidogrel' OR
+		drug =   'Effient'  OR drug = 'Plavix' OR drug =  'prasugrel' OR
+		drug ='Prasugrel' drug =  'Cangrelor' OR drug =   'Brilinta' OR
+		drug =  'ticagrelor' OR drug =   'Ticlopidine HCl') ;

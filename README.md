@@ -12,3 +12,4 @@ Determine if there is an association between initiation of antiplatelet medical 
 | [extract_drugs](https://github.com/doscsy12/shade_22/blob/main/extract_drugs)             | query drugs from mimics-iv |
 | [eda](https://github.com/doscsy12/shade_22/blob/main/eda.ipynb)             | preprocessing |
 | [model_tuning](https://github.com/doscsy12/shade_22/blob/main/model_tuning.ipynb)             | test models |
+| [slides](https://github.com/doscsy12/shade_22/blob/main/Team14_slides.pdf)             | slides|

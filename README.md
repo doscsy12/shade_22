@@ -6,3 +6,6 @@ Determine if there is an association between initiation of antiplatelet medical 
 ### Baseline characteristics
 ![Baseline charateristics](https://github.com/doscsy12/shade_22/blob/main/baseline_char.jpeg)
 
+| notebook/ sql codes             | description |
+|-------------------------|--------------|
+| [sql](https://github.com/doscsy12/shade_22/blob/main/extract_data)             | query variables from mimics-iv |

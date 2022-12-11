@@ -1,4 +1,5 @@
-# Datathon-2022
+## Effects of antiplatelet therapy for patients with myocardial injury in the ICU
+This project was done during the SG Healthcare AI Datathon & Expo 2022.
 
 ### Aim
 Determine if there is an association between initiation of antiplatelet medical medical therapy for patients in ICU with myocardial injury, and mortality

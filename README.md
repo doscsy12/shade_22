@@ -2,7 +2,7 @@
 This project was done during the SG Healthcare AI Datathon & Expo 2022.
 
 ### Aim
-Determine if there is an association between initiation of antiplatelet medical medical therapy for patients in ICU with myocardial injury, and mortality
+Determine if there is an association between initiation of antiplatelet medical medical therapy and mortality rates of patients in ICU with myocardial injury
 
 ### Baseline characteristics
 ![Baseline charateristics](https://github.com/doscsy12/shade_22/blob/main/baseline_char.jpeg)
